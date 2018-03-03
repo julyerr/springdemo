@@ -12,11 +12,13 @@
     <!--aop 基于xml的配置方式-->
     <!--<bean id="logInterceptor" class="com.julyerr.aopdemo.aop.LogInterceptor"></bean>-->
     <!--<aop:config>-->
-        <!--<aop:pointcut expression="execution(public * com.julyerr.aopdemo.service.*.add(..))"-->
+        <!--<aop:pointcut expression="execution(public * com.julyerr.aopdemo.controller.*.add(..))"-->
                       <!--id="servicePointcut"/>-->
         <!--<aop:aspect id="logAspect" ref="logInterceptor">-->
             <!--<aop:before method="before"  pointcut-ref="servicePointcut" />-->
         <!--</aop:aspect>-->
 
     <!--</aop:config>-->
+
+
 </beans>
