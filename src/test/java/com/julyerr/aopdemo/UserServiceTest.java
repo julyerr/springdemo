@@ -1,4 +1,4 @@
-package com.julyerr;
+package com.julyerr.aopdemo;
 
 import com.julyerr.aopdemo.model.User;
 import com.julyerr.aopdemo.service.UserService;

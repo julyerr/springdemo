@@ -76,6 +76,27 @@
       <version>2.5.4</version>
     </dependency>
 
+
+      <!--spring jdbcTemplate支持-->
+      <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-jdbc</artifactId>
+          <version>${spring-version}</version>
+      </dependency>
+    <!--sql 支持-->
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>5.1.37</version>
+      <scope>runtime</scope>
+    </dependency>
+      <!--数据库连接池-->
+      <dependency>
+          <groupId>c3p0</groupId>
+          <artifactId>c3p0</artifactId>
+          <version>0.9.1.2</version>
+      </dependency>
+
     <!--junit test-->
     <dependency>
       <groupId>junit</groupId>

@@ -5,20 +5,48 @@
        xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
-    <context:annotation-config />
-    <context:component-scan base-package="com.julyerr"/>  <!-- 自动扫描 -->
+    <context:annotation-config/>
+    <!-- 自动扫描包，为了方便更新，本工程集成了很多项目，如果没有使用到mvc，需要特指扫描哪个子项目才不会报错 -->
+    <context:component-scan base-package="com.julyerr.jdbcTemplate"/>
     <aop:aspectj-autoproxy/>  <!-- 要添加本行 -->
 
     <!--aop 基于xml的配置方式-->
     <!--<bean id="logInterceptor" class="com.julyerr.aopdemo.aop.LogInterceptor"></bean>-->
     <!--<aop:config>-->
-        <!--<aop:pointcut expression="execution(public * com.julyerr.aopdemo.controller.*.add(..))"-->
-                      <!--id="servicePointcut"/>-->
-        <!--<aop:aspect id="logAspect" ref="logInterceptor">-->
-            <!--<aop:before method="before"  pointcut-ref="servicePointcut" />-->
-        <!--</aop:aspect>-->
+    <!--<aop:pointcut expression="execution(public * com.julyerr.aopdemo.controller.*.add(..))"-->
+    <!--id="servicePointcut"/>-->
+    <!--<aop:aspect id="logAspect" ref="logInterceptor">-->
+    <!--<aop:before method="before"  pointcut-ref="servicePointcut" />-->
+    <!--</aop:aspect>-->
 
     <!--</aop:config>-->
 
+    <!--使用c3p0数据库管理容器-->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass" value="com.mysql.jdbc.Driver"></property>
+        <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/demo"></property>
+        <property name="user" value="root"></property>
+        <property name="password" value="root"></property>
+
+        <!-- 连接池参数 -->
+        <property name="minPoolSize" value="3"></property>
+        <property name="maxPoolSize" value="12"></property>
+        <property name="initialPoolSize" value="5"></property>
+        <!--最大空闲等待时间-->
+        <property name="maxIdleTime" value="60"></property>
+
+    </bean>
+
+    <!--jdbcTemplate bean-->
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+
+    <!--studentDao层操作依赖jdbcTemplate-->
+    <bean id="studentDaoImpl"
+          class="com.julyerr.jdbcTemplate.dao.Impl.StudentDaoImpl">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="jdbcTemplateObject" ref="jdbcTemplate"/>
+    </bean>
 
 </beans>
