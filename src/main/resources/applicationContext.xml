@@ -7,7 +7,7 @@
 
     <context:annotation-config/>
     <!-- 自动扫描包，为了方便更新，本工程集成了很多项目，如果没有使用到mvc，需要特指扫描哪个子项目才不会报错 -->
-    <context:component-scan base-package="com.julyerr.jdbcTemplate"/>
+    <context:component-scan base-package="com.julyerr.mybatis"/>
     <aop:aspectj-autoproxy/>  <!-- 要添加本行 -->
 
     <!--aop 基于xml的配置方式-->
@@ -37,16 +37,42 @@
 
     </bean>
 
-    <!--jdbcTemplate bean-->
-    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+    <!--jdbcTemplate 集成使用-->
+    <!--&lt;!&ndash;jdbcTemplate bean&ndash;&gt;-->
+    <!--<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">-->
+    <!--<property name="dataSource" ref="dataSource"></property>-->
+    <!--</bean>-->
+
+    <!--&lt;!&ndash;studentDao层操作依赖jdbcTemplate&ndash;&gt;-->
+    <!--<bean id="studentDaoImpl"-->
+    <!--class="com.julyerr.jdbcTemplate.dao.Impl.StudentDaoImpl">-->
+    <!--<property name="dataSource" ref="dataSource"/>-->
+    <!--<property name="jdbcTemplateObject" ref="jdbcTemplate"/>-->
+    <!--</bean>-->
+
+    <!--mybatis 集成-->
+    <!--sqlSessionFactory配置-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"></property>
+        <property name="configLocation" value="classpath:mybatisConfig.xml"></property>
     </bean>
 
-    <!--studentDao层操作依赖jdbcTemplate-->
-    <bean id="studentDaoImpl"
-          class="com.julyerr.jdbcTemplate.dao.Impl.StudentDaoImpl">
-        <property name="dataSource" ref="dataSource"/>
-        <property name="jdbcTemplateObject" ref="jdbcTemplate"/>
+    <!--dao层bean-->
+    <bean id="userDao" class="com.julyerr.mybatis.dao.UserDaoImpl">
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
     </bean>
+
+    <!--mapper bean-->
+    <!--针对的是mapper package-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.julyerr.mybatis.mapper" />
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+    </bean>
+
+    <!--具体的mapper文件-->
+    <!--<bean id="userMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">-->
+        <!--<property name="mapperInterface" value="com.julyerr.mybatis.mapper.UserMapper"/>-->
+        <!--<property name="sqlSessionFactory" ref="sqlSessionFactory" />-->
+    <!--</bean>-->
 
 </beans>

@@ -12,13 +12,12 @@ public class UserServiceTest {
         ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
 
 
-        UserService service = (UserService)ctx.getBean("userService");
+        UserService service = (UserService)ctx.getBean("userDao");
         System.out.println(service.getClass());
         service.add(new User());
         System.out.println("###");
 
         ctx.destroy();
     }
-
 }
 
